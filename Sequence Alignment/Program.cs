@@ -18,6 +18,7 @@ namespace SequenceAlignment
         {
             NeedlemanWunsch globalAligner = new NeedlemanWunsch();
             globalAligner.Run();
+            Console.WriteLine("\nxxxxxxxxxxxxxxx\n");
             SmithWaterman localAligner = new SmithWaterman();
             localAligner.Run();
         }

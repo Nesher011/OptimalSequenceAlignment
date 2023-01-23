@@ -110,16 +110,47 @@
 
         public void PrintResults()
         {
-            // Print all possible alignment
+            Console.WriteLine("Solution matrix:");
+
+            for (int i = 0; i < scoreMatrix.GetLength(0); i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("\t\t");
+
+                    for (int j = 0; j < scoreMatrix.GetLength(1); j++)
+                    {
+                        if (j != 0)
+                        {
+                            Console.Write(SecondSequence[j - 1] + "\t");
+                        }
+                    }
+
+                    Console.WriteLine();
+                }
+
+                if (i != 0)
+                {
+                    Console.Write(FirstSequence[i - 1]);
+                }
+
+                Console.Write("\t");
+
+                for (int j = 0; j < scoreMatrix.GetLength(1); j++)
+                {
+                    Console.Write(scoreMatrix[i, j] + "\t");
+                }
+
+                Console.WriteLine();
+            }
+
             Console.WriteLine("\nLocal Optimal Alignment:");
 
             Console.WriteLine(AlignedSequences.FirstAlignedSequence);
             Console.WriteLine(AlignedSequences.SecondAlignedSequence);
 
-            Console.WriteLine("----------");
             Console.WriteLine("\nSimilarity: " + similarity);
             Console.WriteLine("\nEdit distance: " + editDistance);
-            Console.WriteLine("----------");
         }
 
         public void Run()

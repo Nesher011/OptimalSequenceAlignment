@@ -98,8 +98,7 @@
                 if (i == 0)
                 {
                     Console.Write("\t\t");
-                    Console.ForegroundColor = ConsoleColor.Green;
-
+                    
                     for (int j = 0; j < scoreMatrix.GetLength(1); j++)
                     {
                         if (j != 0)
@@ -108,15 +107,12 @@
                         }
                     }
 
-                    Console.ResetColor();
                     Console.WriteLine();
                 }
 
                 if (i != 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(FirstSequence[i - 1]);
-                    Console.ResetColor();
                 }
 
                 Console.Write("\t");
@@ -138,10 +134,8 @@
             Console.WriteLine(AlignedSequences.FirstAlignedSequence);
             Console.WriteLine(AlignedSequences.SecondAlignedSequence);
 
-            Console.WriteLine("----------");
             Console.WriteLine("\nSimilarity: " + similarity);
             Console.WriteLine("\nEdit distance: " + editDistance);
-            Console.WriteLine("----------");
         }
 
         public void Run()
