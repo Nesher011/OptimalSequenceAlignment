@@ -2,13 +2,6 @@
 {
     internal class SmithWaterman : BaseAlgorithm
     {
-        public enum ScoreEnum
-        {
-            Match = 1,
-            Mismatch = -1,
-            Gap = -1
-        }
-
         public enum TraceEnum
         {
             Stop = 0,
@@ -26,23 +19,18 @@
             int maxScore = -1;
             int maxRowIndex = -1;
             int maxColumnIndex = -1;
-            int matchValue = 0;
-
             for (int i = 1; i < scoreMatrix.GetLength(0); i++)
             {
                 for (int j = 1; j < scoreMatrix.GetLength(1); j++)
                 {
-                    if (FirstSequence[i - 1] == SecondSequence[j - 1])
-                    {
-                        matchValue = (int)ScoreEnum.Match;
-                    }
-                    else
-                    {
-                        matchValue = (int)ScoreEnum.Mismatch;
-                    }
+                    int matchValue;
+                    int gapValue;
+                    matchValue = SimilarityMatrix[Nucleotides[FirstSequence[i - 1]], Nucleotides[SecondSequence[j - 1]]];
+                    gapValue = SimilarityMatrix[Nucleotides['_'], Nucleotides[SecondSequence[j - 1]]];
+
                     int diagonalScore = scoreMatrix[i - 1, j - 1] + matchValue;
-                    int verticalScore = scoreMatrix[i - 1, j] + (int)ScoreEnum.Gap;
-                    int horizontalScore = scoreMatrix[i, j - 1] + (int)ScoreEnum.Gap;
+                    int verticalScore = scoreMatrix[i - 1, j] + gapValue;
+                    int horizontalScore = scoreMatrix[i, j - 1] + gapValue;
 
                     scoreMatrix[i, j] = Math.Max(Math.Max(diagonalScore, verticalScore), horizontalScore);
 
@@ -98,8 +86,8 @@
                     currentAlignedSequenceTwo = SecondSequence[maxColumn - 1].ToString();
                     maxColumn--;
                 }
-                alignedSequenceOne = alignedSequenceOne + currentAlignedSequenceOne;
-                alignedSequenceTwo = alignedSequenceTwo + currentAlignedSequenceTwo;
+                alignedSequenceOne += currentAlignedSequenceOne;
+                alignedSequenceTwo += currentAlignedSequenceTwo;
             }
             AlignedSequences = new AlignedSequencePair
             {

@@ -53,11 +53,14 @@
 
         public void CalculateSimilarityAndEditDistance()
         {
+            int perfectSimilarity = 0;
             for (int i = 0; i < AlignedSequences.FirstAlignedSequence.Length; i++)
             {
-                editDistance = editDistance + DistanceMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.SecondAlignedSequence[i]]];
-                similarity = similarity + SimilarityMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.SecondAlignedSequence[i]]];
+                editDistance += DistanceMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.SecondAlignedSequence[i]]];
+                perfectSimilarity += SimilarityMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.FirstAlignedSequence[i]]];
+                similarity += SimilarityMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.SecondAlignedSequence[i]]];
             }
+            similarity /= perfectSimilarity;
         }
 
         public void ReadSequencesFromFiles()
