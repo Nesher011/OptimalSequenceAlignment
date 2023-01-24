@@ -8,25 +8,39 @@
 
         public void FillMatrix()
         {
-            for (int i = 0; i < scoreMatrix.GetLength(0); i++)
+            for (int i = 0; i <= FirstSequence.Length ; i++)
             {
-                scoreMatrix[i, 0] = i * SimilarityMatrix[4, 0];
+                if (i == 0)
+                {
+                    scoreMatrix[i, 0] = 0;//SimilarityMatrix[Nucleotides[FirstSequence[i]], Nucleotides['_']];
+                }
+                else
+                {
+                    scoreMatrix[i, 0] = scoreMatrix[i - 1, 0] + SimilarityMatrix[Nucleotides[FirstSequence[i-1]], Nucleotides['_']];
+                }
             }
 
-            for (int j = 0; j < scoreMatrix.GetLength(1); j++)
+            for (int j = 0; j <= SecondSequence.Length; j++)
             {
-                scoreMatrix[0, j] = j * SimilarityMatrix[4, 0];
+                if (j == 0)
+                {
+                    scoreMatrix[0, j] = 0;// SimilarityMatrix[Nucleotides['_'], Nucleotides[SecondSequence[j]]];
+                }
+                else
+                {
+                    scoreMatrix[0, j] = scoreMatrix[0, j - 1] + SimilarityMatrix[Nucleotides['_'], Nucleotides[SecondSequence[j-1]]];
+                }
             }
 
-            for (int i = 1; i < scoreMatrix.GetLength(0); i++)
+            for (int i = 1; i <= FirstSequence.Length; i++)
             {
                 char sequenceOneChar = FirstSequence[i - 1];
-                for (int j = 1; j < scoreMatrix.GetLength(1); j++)
+                for (int j = 1; j <= SecondSequence.Length; j++)
                 { 
                     char sequenceTwoChar = SecondSequence[j - 1];
                     int match = scoreMatrix[i - 1, j - 1] + SimilarityMatrix[Nucleotides[sequenceOneChar], Nucleotides[sequenceTwoChar]];
-                    int delete = scoreMatrix[i - 1, j] + SimilarityMatrix[Nucleotides[sequenceOneChar], SimilarityMatrix.GetLength(1) - 1];
-                    int insert = scoreMatrix[i, j - 1] + SimilarityMatrix[SimilarityMatrix.GetLength(0)-1, Nucleotides[sequenceTwoChar]];
+                    int delete = scoreMatrix[i - 1, j] + SimilarityMatrix[Nucleotides[sequenceOneChar], Nucleotides['_']];
+                    int insert = scoreMatrix[i, j - 1] + SimilarityMatrix[Nucleotides['_'], Nucleotides[sequenceTwoChar]];
                     scoreMatrix[i, j] = Math.Max(Math.Max(delete, insert), match);
                 }
             }
@@ -73,8 +87,12 @@
         }
 
         public void PrintResults()
-        { 
-            Console.WriteLine("Solution matrix:");
+        {
+            Console.WriteLine("Sequences to allign:");
+            Console.WriteLine(FirstSequence);
+            Console.WriteLine(SecondSequence);
+
+            Console.WriteLine("\nSolution matrix:");
 
             for (int i = 0; i < scoreMatrix.GetLength(0); i++)
             {
