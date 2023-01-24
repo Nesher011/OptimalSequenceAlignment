@@ -7,7 +7,8 @@
         public const string SimilarityMatrixFileName = "SimMat.csv";
         public const string DistanceMatrixFileName = "DisMat.csv";
 
-        public AlignedSequencePair AlignedSequences { get; set; }
+        public string FirstAlignedSequence { get; set; } = string.Empty;
+        public string SecondAlignedSequence { get; set; } = string.Empty;
 
         public string FirstSequence { get; set; } = string.Empty;
         public string SecondSequence { get; set; } = string.Empty;
@@ -43,7 +44,6 @@
 
         public BaseAlgorithm()
         {
-            AlignedSequences = new AlignedSequencePair();
             SimilarityMatrix = new int[5, 5];
             DistanceMatrix = new int[5, 5];
             ReadSequencesFromFiles();
@@ -54,11 +54,11 @@
         public void CalculateSimilarityAndEditDistance()
         {
             int perfectSimilarity = 0;
-            for (int i = 0; i < AlignedSequences.FirstAlignedSequence.Length; i++)
-            {
-                editDistance += DistanceMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.SecondAlignedSequence[i]]];
-                perfectSimilarity += SimilarityMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.FirstAlignedSequence[i]]];
-                similarity += SimilarityMatrix[Nucleotides[AlignedSequences.FirstAlignedSequence[i]], Nucleotides[AlignedSequences.SecondAlignedSequence[i]]];
+            for (int i = 0; i < FirstAlignedSequence.Length; i++)
+            { 
+                editDistance += DistanceMatrix[Nucleotides[FirstAlignedSequence[i]], Nucleotides[SecondAlignedSequence[i]]];
+                perfectSimilarity += SimilarityMatrix[Nucleotides[FirstAlignedSequence[i]], Nucleotides[FirstAlignedSequence[i]]];
+                similarity += SimilarityMatrix[Nucleotides[FirstAlignedSequence[i]], Nucleotides[SecondAlignedSequence[i]]];
             }
             similarity /= perfectSimilarity;
         }
@@ -88,7 +88,7 @@
             }
             if (File.Exists(fullPath + DistanceMatrixFileName))
             {
-                matrix = File.ReadAllLines(fullPath + SimilarityMatrixFileName).Select(x => x.Split(',')).ToArray();
+                matrix = File.ReadAllLines(fullPath + DistanceMatrixFileName).Select(x => x.Split(',')).ToArray();
                 for (int i = 0; i < matrix.Length; i++)
                 {
                     for (int j = 0; j < matrix[i].Length; j++)

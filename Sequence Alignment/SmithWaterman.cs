@@ -2,6 +2,11 @@
 {
     internal class SmithWaterman : BaseAlgorithm
     {
+        public SmithWaterman() : base()
+        {
+
+        }
+
         public enum TraceEnum
         {
             Stop = 0,
@@ -10,13 +15,9 @@
             Diagonal = 3
         }
 
-        public SmithWaterman() : base()
-        {
-        }
-
         public void AlignSequences()
         {
-            int maxScore = -1;
+            int maxScore = 0;
             int maxRowIndex = -1;
             int maxColumnIndex = -1;
             for (int i = 1; i < scoreMatrix.GetLength(0); i++)
@@ -26,13 +27,20 @@
                     int matchValue;
                     int gapValue;
                     matchValue = SimilarityMatrix[Nucleotides[FirstSequence[i - 1]], Nucleotides[SecondSequence[j - 1]]];
-                    gapValue = SimilarityMatrix[Nucleotides['_'], Nucleotides[SecondSequence[j - 1]]];
-
                     int diagonalScore = scoreMatrix[i - 1, j - 1] + matchValue;
+                    gapValue = SimilarityMatrix[Nucleotides[FirstSequence[i - 1]], Nucleotides['_']];
                     int verticalScore = scoreMatrix[i - 1, j] + gapValue;
+                    gapValue = SimilarityMatrix[Nucleotides['_'], Nucleotides[SecondSequence[j - 1]]];
                     int horizontalScore = scoreMatrix[i, j - 1] + gapValue;
+                    List<int> scoreList = new List<int>
+                    {
+                        diagonalScore,
+                        verticalScore,
+                        horizontalScore,
+                        0
+                    };
 
-                    scoreMatrix[i, j] = Math.Max(Math.Max(diagonalScore, verticalScore), horizontalScore);
+                    scoreMatrix[i, j] = scoreList.Max();
 
                     if (scoreMatrix[i, j] == 0)
                     {
@@ -89,11 +97,9 @@
                 alignedSequenceOne += currentAlignedSequenceOne;
                 alignedSequenceTwo += currentAlignedSequenceTwo;
             }
-            AlignedSequences = new AlignedSequencePair
-            {
-                FirstAlignedSequence = alignedSequenceOne.Reverse(),
-                SecondAlignedSequence = alignedSequenceTwo.Reverse()
-            };
+            FirstAlignedSequence = alignedSequenceOne.Reverse();
+            SecondAlignedSequence = alignedSequenceTwo.Reverse();
+
         }
 
         public void PrintResults()
@@ -134,10 +140,10 @@
 
             Console.WriteLine("\nLocal Optimal Alignment:");
 
-            Console.WriteLine(AlignedSequences.FirstAlignedSequence);
-            Console.WriteLine(AlignedSequences.SecondAlignedSequence);
+            Console.WriteLine(FirstAlignedSequence);
+            Console.WriteLine(SecondAlignedSequence);
 
-            Console.WriteLine("\nSimilarity: " + similarity);
+            Console.WriteLine("\nSimilarity: " + scoreMatrix.Cast<int>().Max());
             Console.WriteLine("\nEdit distance: " + editDistance);
         }
 

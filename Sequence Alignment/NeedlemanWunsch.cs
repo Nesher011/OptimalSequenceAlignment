@@ -8,7 +8,6 @@
 
         public void FillMatrix()
         {
-            // Fill in first row and first col with gap values
             for (int i = 0; i < scoreMatrix.GetLength(0); i++)
             {
                 scoreMatrix[i, 0] = i * SimilarityMatrix[4, 0];
@@ -19,26 +18,20 @@
                 scoreMatrix[0, j] = j * SimilarityMatrix[4, 0];
             }
 
-            // Traverse matrix and calculate all values
-
             for (int i = 1; i < scoreMatrix.GetLength(0); i++)
             {
                 char sequenceOneChar = FirstSequence[i - 1];
                 for (int j = 1; j < scoreMatrix.GetLength(1); j++)
-                {
-                    //determine what values we are checking
+                { 
                     char sequenceTwoChar = SecondSequence[j - 1];
                     int match = scoreMatrix[i - 1, j - 1] + SimilarityMatrix[Nucleotides[sequenceOneChar], Nucleotides[sequenceTwoChar]];
                     int delete = scoreMatrix[i - 1, j] + SimilarityMatrix[Nucleotides[sequenceOneChar], SimilarityMatrix.GetLength(1) - 1];
-                    int insert = scoreMatrix[i, j - 1] + SimilarityMatrix[Nucleotides[sequenceOneChar], SimilarityMatrix.GetLength(1) - 1];
+                    int insert = scoreMatrix[i, j - 1] + SimilarityMatrix[SimilarityMatrix.GetLength(0)-1, Nucleotides[sequenceTwoChar]];
                     scoreMatrix[i, j] = Math.Max(Math.Max(delete, insert), match);
                 }
             }
         }
 
-        /// <summary>
-        /// Find all possible sequences.
-        /// </summary>
         public void AlignSequences()
         {
             string firstAlignedSequence = "";
@@ -80,17 +73,12 @@
                     j--;
                 }
             }
-            AlignedSequences = new AlignedSequencePair
-            {
-                FirstAlignedSequence = firstAlignedSequence,
-                SecondAlignedSequence = secondAlignedSequence
-            };
+            FirstAlignedSequence = firstAlignedSequence;
+            SecondAlignedSequence = secondAlignedSequence;
         }
 
         public void PrintResults()
-        {
-            // Print solution matrix
-
+        { 
             Console.WriteLine("Solution matrix:");
 
             for (int i = 0; i < scoreMatrix.GetLength(0); i++)
@@ -125,16 +113,12 @@
                 Console.WriteLine();
             }
 
-            // Print score
-            Console.WriteLine("\nObtained score: " + scoreMatrix[scoreMatrix.GetLength(0) - 1, scoreMatrix.GetLength(1) - 1]);
-
-            // Print all possible alignments
             Console.WriteLine("\nGlobal Optimal Alignment:");
 
-            Console.WriteLine(AlignedSequences.FirstAlignedSequence);
-            Console.WriteLine(AlignedSequences.SecondAlignedSequence);
+            Console.WriteLine(FirstAlignedSequence);
+            Console.WriteLine(SecondAlignedSequence);
 
-            Console.WriteLine("\nSimilarity: " + similarity);
+            Console.WriteLine("\nSimilarity: " + scoreMatrix[scoreMatrix.GetLength(0) - 1, scoreMatrix.GetLength(1) - 1]);
             Console.WriteLine("\nEdit distance: " + editDistance);
         }
 
