@@ -41,7 +41,7 @@
 
             while (i > 0 || j > 0)
             {
-                if (i > 0 && j > 0)
+                if (i > 0 && j > 0 )
                 {
                     char sequenceOneChar = FirstSequence[i - 1];
                     char sequenceTwoChar = SecondSequence[j - 1];
@@ -54,18 +54,13 @@
                         continue;
                     }
                 }
-                if (i > 0)
+                if (i > 0 && scoreMatrix[i, j] == scoreMatrix[i - 1, j] + DistanceMatrix[Nucleotides[FirstSequence[i-1]], Nucleotides['_']])
                 {
-                    char sequenceOneChar = FirstSequence[i - 1];
-                    if (scoreMatrix[i, j] == scoreMatrix[i - 1, j] + DistanceMatrix[Nucleotides[sequenceOneChar], Nucleotides['_']])
-                    {
-                        firstAlignedSequence = sequenceOneChar + firstAlignedSequence;
-                        secondAlignedSequence = "_" + secondAlignedSequence;
-                        i--;
-                        continue;
-                    }
+                    firstAlignedSequence = FirstSequence[i-1] + firstAlignedSequence;
+                    secondAlignedSequence = "_" + secondAlignedSequence;
+                    i--;
                 }
-                if (j > 0)
+                else
                 {
                     char sequenceTwoChar = SecondSequence[j - 1];
                     firstAlignedSequence = "_" + firstAlignedSequence;
