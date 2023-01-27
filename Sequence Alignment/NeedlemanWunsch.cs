@@ -12,7 +12,7 @@
             {
                 if (i == 0)
                 {
-                    scoreMatrix[i, 0] = 0;//SimilarityMatrix[Nucleotides[FirstSequence[i]], Nucleotides['_']];
+                    scoreMatrix[i, 0] = 0;
                 }
                 else
                 {
@@ -68,7 +68,7 @@
                         continue;
                     }
                 }
-                if (i > 0 && scoreMatrix[i, j] == scoreMatrix[i - 1, j] + DistanceMatrix[Nucleotides[FirstSequence[i-1]], Nucleotides['_']])
+                if (i > 0 && scoreMatrix[i, j] == scoreMatrix[i - 1, j] + SimilarityMatrix[Nucleotides[FirstSequence[i-1]], Nucleotides['_']])
                 {
                     firstAlignedSequence = FirstSequence[i-1] + firstAlignedSequence;
                     secondAlignedSequence = "_" + secondAlignedSequence;
